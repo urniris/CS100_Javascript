@@ -2,63 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dropdown Menu with Options from the External File</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-        select { width: 100%; padding: 8px; margin-top: 20px; }
-        button { margin-top: 10px; }
-        #output { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
-    </style>
+    <title>Dynamic Dropdown and History Display</title>
 </head>
 <body>
-    <!-- Define your own word of what to choose -->
-    <h1>Choose a ????A????</h1>
+    <h1>Choose a fruit</h1>
     <select id="dropdown">
-        <option value="">Select one</option>
+        <option value="">Select a fruit</option>
     </select>
-    <button onclick="showSelected()">Show Selected</button>
-    <div id="output"></div>
 
-    <!-- Internal JavaScript block starts here -->
-    ????B????
-        // Function to load options from the text file
-        function loadOptions() {
-            // Fetch data from a txt file
-            fetch(????C????)
-                .then(response => response.text())
-                .then(data => {
-                    // Get reference to the dropdown menu element
-                    const dropdown = ????D????
-                    const options = data.split('\n').map(option => option.trim()).filter(option => option !== '');
+    <div id="output">
+        <h2>History of Selections:</h2>
+    </div>
 
-                    options.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = ????E????;
-                        optionElement.textContent = ????F????;
-                        ????G????.appendChild(????H????);
-                    });
-                })
-                .catch(error => console.error('Error loading options:', error));
-        }
+    <script>
+        // Step 3: Fetching data from the options.txt file
+        fetch('options.txt')
+            .then(response => response.text())
+            .then(data => {
+                // Step 4: Getting a reference to the dropdown menu
+                const dropdown = document.getElementById('dropdown');
+                
+                // Split the text data from the file into an array of options
+                const options = data.split('\n');
 
-        // Function to display the selected option and keep a history of selections
-        function showSelected() {
-            // Get a reference to option of the dropdown element
-            const selectedOption = document.????I????.value;
-            // Get a reference to the HTML element id output to a variable output
-            ????J????
+                // Step 5: Creating option elements and appending them to the dropdown
+                options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    dropdown.appendChild(optionElement);
+                });
 
-            if (selectedOption) {
-                const newEntry = document.createElement('p');
-                newEntry.textContent = `You selected: ${selectedOption}`;
-                // Append the newEntry as a child of the output element
-                ????K????
-            }
-        }
+                // Step 7: Add event listener to capture when an option is selected
+                dropdown.addEventListener('change', () => {
+                    const selectedOption = dropdown.value;
 
-        // Load options on page load
-        window.onload = loadOptions;
+                    // Step 8: Getting a reference to the output div
+                    const outputDiv = document.getElementById('output');
+
+                    // Step 9: Display the selected option in the history
+                    if (selectedOption) {
+                        const para = document.createElement('p');
+                        para.textContent = selectedOption;
+                        outputDiv.appendChild(para);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching options:', error));
     </script>
 </body>
 </html>
+
 
